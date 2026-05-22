@@ -42,16 +42,16 @@ export default function Sidebar({ mobileOpen, onClose }) {
   return (
     <>
       {mobileOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
-          onClick={onClose}
-        />
+        <div className="fixed inset-0 bg-black/50 z-40 lg:hidden" onClick={onClose} />
       )}
-      <motion.aside
-        initial={{ x: -300 }}
-        animate={{ x: mobileOpen ? 0 : -300 }}
-        transition={{ duration: 0.3, ease: "easeOut" }}
-        className="fixed top-0 left-0 h-screen w-72 glass border-r border-indigo-500/10 p-6 flex flex-col z-50 lg:translate-x-0"
+      <aside
+        className={`
+          fixed top-0 left-0 h-screen w-72
+          glass border-r border-indigo-500/10 p-6 flex flex-col
+          z-50 transition-transform duration-300 ease-out
+          ${mobileOpen ? 'translate-x-0' : '-translate-x-full'}
+          lg:translate-x-0
+        `}
       >
       <div className="flex items-center justify-between mb-6 lg:hidden">
         <h2 className="text-lg font-bold gradient-text">Menu</h2>
@@ -170,7 +170,7 @@ export default function Sidebar({ mobileOpen, onClose }) {
           <span className="text-sm font-medium">Sair</span>
         </motion.button>
       </div>
-    </motion.aside>
+    </aside>
     </>
   );
 }
