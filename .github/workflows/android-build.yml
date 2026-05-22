@@ -14,7 +14,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup JDK 17
+      - name: Setup JDK 17 (for SDK cmdline-tools)
         uses: actions/setup-java@v4
         with:
           java-version: 17
@@ -23,33 +23,20 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v4
 
-      - name: Build APK
+      - name: Switch to JDK 21 (for Gradle build)
+        uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: corretto
+
+      - name: Build debug APK
         run: |
           cd frontend/android
           chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon --stacktrace 2>&1 | tee /tmp/build.log
-
-      - name: Upload build log on failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-log
-          path: /tmp/build.log
-          retention-days: 7
-
-      - name: Find APK
-        id: find_apk
-        if: success()
-        run: |
-          find frontend/android -name "*.apk" -type f 2>&1
-          echo "---"
-          ls -la frontend/android/app/build/outputs/ 2>&1 || true
-          echo "---"
+          ./gradlew assembleDebug --no-daemon --stacktrace
 
       - name: Upload APK
-        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: app-debug
           path: frontend/android/app/build/outputs/apk/debug/app-debug.apk
-          if-no-files-found: error

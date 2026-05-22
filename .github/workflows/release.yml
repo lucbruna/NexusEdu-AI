@@ -13,14 +13,20 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup JDK 21
+      - name: Setup JDK 17 (for SDK cmdline-tools)
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: temurin
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v4
+
+      - name: Switch to JDK 21 (for Gradle build)
         uses: actions/setup-java@v4
         with:
           java-version: 21
           distribution: corretto
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
 
       - name: Decode keystore
         run: |
@@ -30,11 +36,7 @@ jobs:
         run: |
           cd frontend/android
           chmod +x gradlew
-          ./gradlew assembleRelease \
-            -Pandroid.injected.signing.store.file=$GITHUB_WORKSPACE/keystore.jks \
-            -Pandroid.injected.signing.store.password=${{ secrets.KEYSTORE_PASSWORD }} \
-            -Pandroid.injected.signing.key.alias=${{ secrets.KEY_ALIAS }} \
-            -Pandroid.injected.signing.key.password=${{ secrets.KEY_PASSWORD }}
+          ./gradlew assembleRelease --no-daemon --stacktrace
         env:
           KEYSTORE_PATH: ${{ github.workspace }}/keystore.jks
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
