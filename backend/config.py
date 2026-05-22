@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     tesseract_cmd: str = "tesseract"
     host: str = "0.0.0.0"
     port: int = 8000
-    cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173"
+    cors_origins: str = "http://localhost:5173,http://127.0.0.1:5173,capacitor://localhost,http://localhost"
     rate_limit_per_minute: int = 30
     max_upload_size_mb: int = 50
 
