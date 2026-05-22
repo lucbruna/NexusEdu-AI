@@ -51,7 +51,7 @@ export default function Register() {
         initial={{ opacity: 0, scale: 0.9, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-        className="glass rounded-3xl p-10 w-[420px] shadow-2xl relative z-10"
+        className="glass rounded-3xl p-6 sm:p-10 w-full max-w-[420px] shadow-2xl relative z-10"
       >
         <motion.div
           initial={{ opacity: 0, y: -10 }}

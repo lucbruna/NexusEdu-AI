@@ -14,7 +14,7 @@ const menuItems = [
   { path: "/admin", label: "Painel Admin", icon: "👑" },
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ mobileOpen, onClose }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [profile, setProfile] = useState(null);
@@ -40,12 +40,23 @@ export default function Sidebar() {
   }
 
   return (
-    <motion.aside
-      initial={{ x: -300 }}
-      animate={{ x: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
-      className="fixed top-0 left-0 h-screen w-72 glass border-r border-indigo-500/10 p-6 flex flex-col z-50"
-    >
+    <>
+      {mobileOpen && (
+        <div
+          className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+          onClick={onClose}
+        />
+      )}
+      <motion.aside
+        initial={{ x: -300 }}
+        animate={{ x: mobileOpen ? 0 : -300 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+        className="fixed top-0 left-0 h-screen w-72 glass border-r border-indigo-500/10 p-6 flex flex-col z-50 lg:translate-x-0"
+      >
+      <div className="flex items-center justify-between mb-6 lg:hidden">
+        <h2 className="text-lg font-bold gradient-text">Menu</h2>
+        <button onClick={onClose} className="p-2 rounded-lg hover:bg-white/10 text-slate-400">✕</button>
+      </div>
       <div className="flex flex-col flex-1">
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -160,5 +171,6 @@ export default function Sidebar() {
         </motion.button>
       </div>
     </motion.aside>
+    </>
   );
 }
