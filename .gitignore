@@ -1,0 +1,26 @@
+# Python
+backend/venv/
+backend/__pycache__/
+*.py[cod]
+backend/.env
+backend/temp*.pdf
+backend/temp*.docx
+backend/temp*.png
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+pgdata/
+
+# Alembic
+backend/migrations/versions/*.pyc

@@ -1,0 +1,11 @@
+cd backend
+.\venv\Scripts\Activate.ps1
+py -3.11 -m uvicorn main:app --reload
+E em outro terminal o frontend:
+cd frontend
+npm run dev
+
+
+
+
+projeto nexosEdu AI
