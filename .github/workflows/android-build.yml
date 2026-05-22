@@ -8,11 +8,16 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
 
       - name: Setup JDK 17
         uses: actions/setup-java@v4
@@ -23,9 +28,17 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v4
 
-      - name: Install required SDK packages
+      - name: Install frontend dependencies
         run: |
-          sdkmanager "platforms;android-36" "build-tools;36.0.0" --sdk_root=$ANDROID_SDK_ROOT 2>&1 || echo "SDK packages installed or already present"
+          cd frontend
+          npm ci
+
+      - name: Sync Capacitor plugins
+        run: |
+          cd frontend
+          npx cap sync android
+          # Patch Java version to VERSION_17 for JDK 17 compatibility
+          sed -i 's/VERSION_21/VERSION_17/g' android/app/capacitor.build.gradle
 
       - name: Build debug APK
         run: |
