@@ -24,29 +24,13 @@ jobs:
         uses: android-actions/setup-android@v4
 
       - name: Build APK
-        id: build
-        continue-on-error: true
         run: |
           cd frontend/android
           chmod +x gradlew
-          echo "=== Starting Gradle build ==="
-          ./gradlew assembleDebug --no-daemon --stacktrace 2>&1 | tee /tmp/build.log
-          echo "=== Gradle exit code: $? ==="
-          ls -la /tmp/build.log
+          ./gradlew assembleDebug --no-daemon --stacktrace
 
-      - name: Upload build log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-log
-          path: /tmp/build.log
-          retention-days: 7
-
-      - name: Check build status
-        if: steps.build.outcome != 'success'
-        run: |
-          echo "Build failed. See 'build-log' artifact for details."
-          exit 1
+      - name: List APK output
+        run: ls -la frontend/android/app/build/outputs/apk/debug/
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
