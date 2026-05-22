@@ -14,32 +14,31 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup JDK 21
+      - name: Setup JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: 21
-          distribution: corretto
+          java-version: 17
+          distribution: temurin
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v4
 
       - name: Build APK
         run: |
-          export ANDROID_HOME=$ANDROID_SDK_ROOT
-          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
-          echo "ANDROID_HOME=$ANDROID_HOME"
-          echo "JAVA_HOME=$JAVA_HOME"
-          echo "Contents of platform-tools:"
-          ls -la $ANDROID_SDK_ROOT/platform-tools/ 2>/dev/null || echo "No platform-tools"
-          echo "Contents of build-tools:"
-          ls -la $ANDROID_SDK_ROOT/build-tools/ 2>/dev/null || echo "No build-tools"
-          echo "Contents of platforms:"
-          ls -la $ANDROID_SDK_ROOT/platforms/ 2>/dev/null || echo "No platforms"
           cd frontend/android
           chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon --stacktrace 2>&1
+          ./gradlew assembleDebug --no-daemon --stacktrace 2>&1 | tee /tmp/build.log
+
+      - name: Upload build log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log
+          path: /tmp/build.log
+          retention-days: 7
 
       - name: List APK output
+        if: success()
         run: ls -la frontend/android/app/build/outputs/apk/debug/ || echo "No APK directory"
 
       - name: Upload APK
