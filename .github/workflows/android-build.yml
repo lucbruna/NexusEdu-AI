@@ -24,23 +24,23 @@ jobs:
         uses: android-actions/setup-android@v4
 
       - name: Build APK
-        id: build
         run: |
+          export ANDROID_HOME=$ANDROID_SDK_ROOT
+          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT"
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          echo "JAVA_HOME=$JAVA_HOME"
+          echo "Contents of platform-tools:"
+          ls -la $ANDROID_SDK_ROOT/platform-tools/ 2>/dev/null || echo "No platform-tools"
+          echo "Contents of build-tools:"
+          ls -la $ANDROID_SDK_ROOT/build-tools/ 2>/dev/null || echo "No build-tools"
+          echo "Contents of platforms:"
+          ls -la $ANDROID_SDK_ROOT/platforms/ 2>/dev/null || echo "No platforms"
           cd frontend/android
           chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon --stacktrace > /tmp/build.log 2>&1
-          exit_code=$?
-          echo "exit_code=$exit_code" >> $GITHUB_OUTPUT
-          cat /tmp/build.log
-          exit $exit_code
+          ./gradlew assembleDebug --no-daemon --stacktrace 2>&1
 
-      - name: Upload build log
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-log
-          path: /tmp/build.log
-          retention-days: 7
+      - name: List APK output
+        run: ls -la frontend/android/app/build/outputs/apk/debug/ || echo "No APK directory"
 
       - name: Upload APK
         if: success()
