@@ -27,15 +27,12 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v4
 
-      - name: Install frontend dependencies
+      - name: Install dependencies and build frontend
         run: |
           cd frontend
           npm ci
-
-      - name: Sync Capacitor plugins
-        run: |
-          cd frontend
-          npx cap sync android
+          npm run build
+          npx cap sync
           sed -i 's/VERSION_21/VERSION_17/g' android/app/capacitor.build.gradle
 
       - name: Decode keystore
