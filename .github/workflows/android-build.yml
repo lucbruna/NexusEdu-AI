@@ -24,12 +24,29 @@ jobs:
         uses: android-actions/setup-android@v4
 
       - name: Build debug APK
+        id: build
+        continue-on-error: true
         run: |
           cd frontend/android
           chmod +x gradlew
-          ./gradlew assembleDebug --no-daemon --stacktrace
+          ./gradlew assembleDebug --no-daemon --stacktrace 2>&1 | tee /tmp/build.log
+          exit ${PIPESTATUS[0]}
+
+      - name: Show build log
+        if: always()
+        run: cat /tmp/build.log 2>/dev/null || echo "No build log"
+
+      - name: Check status
+        if: always()
+        run: |
+          if [ "${{ steps.build.outcome }}" = "failure" ]; then
+            echo "BUILD FAILED"
+            exit 1
+          fi
+          echo "BUILD SUCCEEDED"
 
       - name: Upload APK
+        if: steps.build.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
           name: app-debug
