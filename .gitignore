@@ -25,6 +25,11 @@ frontend/android/captures/
 frontend/android/local.properties
 frontend/android/*.iml
 
+# Keystore (sensitive!)
+*.jks
+*.b64
+keystore*
+
 # IDE
 .vscode/
 .idea/
