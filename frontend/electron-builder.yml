@@ -1,0 +1,33 @@
+appId: com.nexusedu.app
+productName: NexusEdu AI
+copyright: Copyright © 2026 NexusEdu
+
+directories:
+  output: release
+  buildResources: buildResources
+
+files:
+  - dist/**/*
+  - electron/**/*
+  - package.json
+
+win:
+  target:
+    - target: nsis
+      arch:
+        - x64
+  icon: buildResources/icon.ico
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  installerIcon: buildResources/icon.ico
+  uninstallerIcon: buildResources/icon.ico
+  installerHeaderIcon: buildResources/icon.ico
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: NexusEdu AI
+  uninstallDisplayName: NexusEdu AI
+  license: null
+  installerSidebar: null

@@ -10,6 +10,20 @@ backend/temp*.png
 # Node
 frontend/node_modules/
 frontend/dist/
+frontend/release/
+frontend/buildResources/
+
+
+# Capacitor
+frontend/assets/
+
+# Android build
+frontend/android/.gradle/
+frontend/android/app/build/
+frontend/android/build/
+frontend/android/captures/
+frontend/android/local.properties
+frontend/android/*.iml
 
 # IDE
 .vscode/
