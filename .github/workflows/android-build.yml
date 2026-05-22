@@ -14,7 +14,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup JDK 17 (for SDK cmdline-tools)
+      - name: Setup JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: 17
@@ -23,27 +23,11 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v4
 
-      - name: Switch to JDK 21 (for Gradle build)
-        uses: actions/setup-java@v4
-        with:
-          java-version: 21
-          distribution: corretto
-
       - name: Build debug APK
-        shell: bash
         run: |
           cd frontend/android
           chmod +x gradlew
-          set -o pipefail
-          ./gradlew assembleDebug --no-daemon --stacktrace 2>&1 | tee /tmp/build.log
-
-      - name: Upload build log
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-log
-          path: /tmp/build.log
-          retention-days: 7
+          ./gradlew assembleDebug --no-daemon --stacktrace
 
       - name: Upload APK
         uses: actions/upload-artifact@v4

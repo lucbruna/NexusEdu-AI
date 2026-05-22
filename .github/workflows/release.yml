@@ -13,7 +13,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup JDK 17 (for SDK cmdline-tools)
+      - name: Setup JDK 17
         uses: actions/setup-java@v4
         with:
           java-version: 17
@@ -21,12 +21,6 @@ jobs:
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@v4
-
-      - name: Switch to JDK 21 (for Gradle build)
-        uses: actions/setup-java@v4
-        with:
-          java-version: 21
-          distribution: corretto
 
       - name: Decode keystore
         run: |
