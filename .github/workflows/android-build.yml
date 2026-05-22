@@ -37,16 +37,19 @@ jobs:
           path: /tmp/build.log
           retention-days: 7
 
-      - name: List APK output
-        id: list_apk
+      - name: Find APK
+        id: find_apk
         if: success()
         run: |
-          ls -la frontend/android/app/build/outputs/apk/ || echo "No APK output base dir"
-          find frontend/android/app/build/outputs -name "*.apk" -type f 2>/dev/null || echo "No APK files found"
+          find frontend/android -name "*.apk" -type f 2>&1
+          echo "---"
+          ls -la frontend/android/app/build/outputs/ 2>&1 || true
+          echo "---"
 
-      - name: Upload all APKs
+      - name: Upload APK
         if: success()
         uses: actions/upload-artifact@v4
         with:
           name: app-debug
-          path: frontend/android/app/build/outputs/apk/**/*.apk
+          path: frontend/android/app/build/outputs/apk/debug/app-debug.apk
+          if-no-files-found: error
