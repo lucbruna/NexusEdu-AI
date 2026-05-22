@@ -19,7 +19,7 @@ jobs:
         with:
           node-version: 22
 
-      - name: Setup JDK 17
+      - name: Setup JDK 17 (for SDK cmdline-tools)
         uses: actions/setup-java@v4
         with:
           java-version: 17
@@ -28,13 +28,18 @@ jobs:
       - name: Setup Android SDK
         uses: android-actions/setup-android@v4
 
+      - name: Switch to JDK 21 (for Gradle build)
+        uses: actions/setup-java@v4
+        with:
+          java-version: 21
+          distribution: corretto
+
       - name: Install dependencies and build frontend
         run: |
           cd frontend
           npm ci
           npm run build
           npx cap sync
-          sed -i 's/VERSION_21/VERSION_17/g' android/app/capacitor.build.gradle
 
       - name: Build debug APK
         run: |
