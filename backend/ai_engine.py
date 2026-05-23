@@ -29,7 +29,7 @@ def generate_openrouter(prompt: str) -> str:
         api_key=settings.openrouter_api_key
     )
     completion = client.chat.completions.create(
-        model="openai/gpt-3.5-turbo",
+        model="gpt-4o-mini",
         messages=[
             {"role": "system", "content": "Responda sempre em português do Brasil. Seja útil, claro e objetivo."},
             {"role": "user", "content": prompt}
