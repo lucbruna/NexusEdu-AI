@@ -22,6 +22,26 @@ User.metadata.create_all(bind=engine)
 History.metadata.create_all(bind=engine)
 ChatMemory.metadata.create_all(bind=engine)
 
+
+def seed_admin():
+    db = next(get_db())
+    try:
+        admin_email = "tomgabi7@gmail.com"
+        user = db.query(User).filter(User.email == admin_email).first()
+        if user and user.role != "admin":
+            user.role = "admin"
+            user.plan = "unlimited"
+            user.credits = 999999
+            db.commit()
+            print(f"Usuário {admin_email} promovido a admin com plano unlimited")
+    except Exception as e:
+        print("Erro no seed_admin:", e)
+    finally:
+        db.close()
+
+
+seed_admin()
+
 # =========================
 # Rate Limiter
 # =========================
