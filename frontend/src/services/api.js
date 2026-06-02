@@ -1,7 +1,17 @@
 import axios from "axios";
 
+function getBaseURL() {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+  if (window.location.hostname.includes("pages.dev")) {
+    return "https://nexusedu-backend-9xp8.onrender.com";
+  }
+  return "http://127.0.0.1:8000";
+}
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://127.0.0.1:8000",
+  baseURL: getBaseURL(),
 });
 
 api.interceptors.request.use((config) => {
