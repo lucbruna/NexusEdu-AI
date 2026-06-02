@@ -5,7 +5,7 @@ services:
     rootDir: backend
     repo: https://github.com/lucbruna/NexusEdu-AI
     branch: main
-    buildCommand: CARGO_HOME=/tmp/cargo pip install -r requirements.txt
+    buildCommand: pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port 10000
     envVars:
       - key: DATABASE_URL
@@ -30,6 +30,10 @@ services:
         value: "50"
       - key: TESSERACT_CMD
         value: "/usr/bin/tesseract"
+      - key: CARGO_HOME
+        value: /tmp/cargo
+      - key: PYTHON_VERSION
+        value: "3.12.8"
     healthCheckPath: /docs
 
 databases:
