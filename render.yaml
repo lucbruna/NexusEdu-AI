@@ -5,7 +5,7 @@ services:
     rootDir: backend
     repo: https://github.com/lucbruna/NexusEdu-AI
     branch: main
-    buildCommand: pip install -r requirements.txt
+    buildCommand: CARGO_HOME=/tmp/cargo pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port 10000
     envVars:
       - key: DATABASE_URL
