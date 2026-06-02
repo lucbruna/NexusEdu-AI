@@ -1,12 +1,10 @@
 services:
   - type: web
     name: nexusedu-backend
-    runtime: python
-    rootDir: backend
+    runtime: docker
     repo: https://github.com/lucbruna/NexusEdu-AI
     branch: main
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn main:app --host 0.0.0.0 --port 10000
+    dockerfilePath: Dockerfile
     envVars:
       - key: DATABASE_URL
         fromDatabase:
@@ -18,23 +16,20 @@ services:
         value: HS256
       - key: JWT_EXPIRY_HOURS
         value: "168"
-      - key: HOST
-        value: "0.0.0.0"
-      - key: PORT
-        value: "10000"
       - key: CORS_ORIGINS
         value: "*"
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: OPENROUTER_API_KEY
+        sync: false
+      - key: TOGETHER_API_KEY
+        sync: false
+      - key: MERCADOPAGO_ACCESS_TOKEN
+        sync: false
       - key: RATE_LIMIT_PER_MINUTE
         value: "60"
       - key: MAX_UPLOAD_SIZE_MB
         value: "50"
-      - key: TESSERACT_CMD
-        value: "/usr/bin/tesseract"
-      - key: CARGO_HOME
-        value: /tmp/cargo
-      - key: PYTHON_VERSION
-        value: "3.12.8"
-    healthCheckPath: /docs
 
 databases:
   - name: nexusedu-db
