@@ -7,9 +7,9 @@ from docx import Document
 from PIL import Image
 import pytesseract
 from database import get_db
-from models import User, History
-from ai_engine import generate_ai_response, generate_lesson_response
-from schemas import PromptRequest
+from models import User, History, Lesson
+from ai_engine import generate_ai_response, generate_lesson_response, generate_lesson_plan
+from schemas import PromptRequest, LessonRequest
 from auth import get_current_user
 from config import settings
 
@@ -173,3 +173,63 @@ Texto:
 """
     response_text = generate_ai_response(prompt)
     return {"text": extracted_text, "analysis": response_text}
+
+
+@router.post("/generate-lesson")
+def generate_lesson(data: LessonRequest, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == data.email).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuário não encontrado")
+
+    if user.plan == "free" and user.credits <= 0:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Limite diário atingido. Faça upgrade para PRO."
+        )
+
+    if user.plan == "free" and user.role != "admin":
+        user.credits -= 1
+
+    content = generate_lesson_plan(data.grade, data.subject, data.bimester, data.topic, data.hours)
+
+    lesson = Lesson(
+        email=data.email,
+        grade=data.grade,
+        subject=data.subject,
+        bimester=data.bimester,
+        topic=data.topic,
+        hours=data.hours,
+        content=content,
+    )
+    db.add(lesson)
+    db.commit()
+    db.refresh(lesson)
+
+    return {
+        "id": lesson.id,
+        "content": content,
+        "credits": user.credits,
+    }
+
+
+@router.get("/lessons")
+def list_lessons(email: str, db: Session = Depends(get_db)):
+    user = db.query(User).filter(User.email == email).first()
+    if not user:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Usuário não encontrado")
+
+    lessons = db.query(Lesson).filter(Lesson.email == email).order_by(Lesson.created_at.desc()).all()
+
+    return [
+        {
+            "id": l.id,
+            "grade": l.grade,
+            "subject": l.subject,
+            "bimester": l.bimester,
+            "topic": l.topic,
+            "hours": l.hours,
+            "content": l.content,
+            "created_at": l.created_at.isoformat() if l.created_at else None,
+        }
+        for l in lessons
+    ]

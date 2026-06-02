@@ -17,6 +17,7 @@ import Correction from "./pages/Correction";
 import Upload from "./pages/Upload";
 import Chat from "./pages/Chat";
 import Upgrade from "./pages/Upgrade";
+import CreateLesson from "./pages/CreateLesson";
 
 function App() {
 
@@ -116,6 +117,14 @@ function App() {
           element={
             <ProtectedRoute>
               <Correction />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/create-lesson"
+          element={
+            <ProtectedRoute>
+              <CreateLesson />
             </ProtectedRoute>
           }
         />

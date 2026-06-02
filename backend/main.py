@@ -7,7 +7,7 @@ from slowapi.errors import RateLimitExceeded
 
 from config import settings
 from database import engine, get_db
-from models import User, History, ChatMemory
+from models import User, History, ChatMemory, Lesson
 
 from routes.auth_routes import router as auth_router
 from routes.chat_routes import router as chat_router
@@ -21,6 +21,7 @@ from routes.payment_routes import router as payment_router
 User.metadata.create_all(bind=engine)
 History.metadata.create_all(bind=engine)
 ChatMemory.metadata.create_all(bind=engine)
+Lesson.metadata.create_all(bind=engine)
 
 
 def seed_admin():

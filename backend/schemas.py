@@ -104,3 +104,26 @@ class PaginatedResponse(BaseModel):
     page: int
     page_size: int
     total_pages: int
+
+
+class LessonRequest(BaseModel):
+    email: str
+    grade: str
+    subject: str
+    bimester: str
+    topic: str
+    hours: int
+
+
+class LessonResponse(BaseModel):
+    id: int
+    email: str
+    grade: str
+    subject: str
+    bimester: str
+    topic: str
+    hours: int
+    content: str
+    created_at: Optional[datetime] = None
+
+    model_config = {"from_attributes": True}

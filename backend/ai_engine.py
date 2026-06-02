@@ -84,3 +84,35 @@ Estruture com:
 Responda em português.
 """
     return generate_ai_response(prompt)
+
+
+def generate_lesson_plan(grade: str, subject: str, bimester: str, topic: str, hours: int) -> str:
+    prompt = f"""
+Você é um professor brasileiro especialista em {subject} para o ensino médio.
+
+Crie um plano de aula completo e detalhado com base nos seguintes dados:
+
+- Série: {grade}
+- Matéria: {subject}
+- Bimestre: {bimester}º bimestre
+- Assunto: {topic}
+- Carga horária: {hours} hora(s)
+
+O plano de aula deve incluir:
+
+1. **Objetivos da aula** (geral e específicos)
+2. **Conteúdo programático** detalhado
+3. **Metodologia** (estratégias de ensino)
+4. **Recursos didáticos** necessários
+5. **Desenvolvimento da aula** passo a passo (distribuído ao longo de {hours} hora(s))
+6. **Atividades para os alunos**
+7. **Forma de avaliação**
+8. **Exercícios resolvidos** (pelo menos 3 exemplos práticos)
+9. **Exercícios propostos** (pelo menos 5 com respostas)
+10. **Referências**
+
+Use linguagem adequada para alunos do ensino médio.
+Seja detalhista e prático.
+Responda em português do Brasil.
+"""
+    return generate_ai_response(prompt)

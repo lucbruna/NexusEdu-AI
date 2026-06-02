@@ -6,6 +6,7 @@ import api from "../services/api";
 const menuItems = [
   { path: "/dashboard", label: "Dashboard", icon: "📊" },
   { path: "/chat", label: "Chat IA", icon: "🤖" },
+  { path: "/create-lesson", label: "Criar Matéria", icon: "📖" },
   { path: "/exams", label: "Gerar Provas", icon: "📝" },
   { path: "/correction", label: "Correção IA", icon: "📚" },
   { path: "/upload", label: "Upload IA", icon: "📄" },

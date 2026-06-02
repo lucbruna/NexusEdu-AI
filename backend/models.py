@@ -50,3 +50,17 @@ class ChatMemory(Base):
     message = Column(Text)
     response = Column(Text)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+
+class Lesson(Base):
+    __tablename__ = "lessons"
+
+    id = Column(Integer, primary_key=True, index=True)
+    email = Column(String, index=True, nullable=False)
+    grade = Column(String, nullable=False)
+    subject = Column(String, nullable=False)
+    bimester = Column(String, nullable=False)
+    topic = Column(String, nullable=False)
+    hours = Column(Integer, nullable=False)
+    content = Column(Text, nullable=False)
+    created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
