@@ -5,6 +5,15 @@ import api from "../services/api";
 import MainLayout from "../layouts/MainLayout";
 
 const grades = [
+  { value: "1º Ano", label: "1º Ano (EF)" },
+  { value: "2º Ano", label: "2º Ano (EF)" },
+  { value: "3º Ano", label: "3º Ano (EF)" },
+  { value: "4º Ano", label: "4º Ano (EF)" },
+  { value: "5º Ano", label: "5º Ano (EF)" },
+  { value: "6º Ano", label: "6º Ano (EF)" },
+  { value: "7º Ano", label: "7º Ano (EF)" },
+  { value: "8º Ano", label: "8º Ano (EF)" },
+  { value: "9º Ano", label: "9º Ano (EF)" },
   { value: "1ª Série", label: "1ª Série (EM)" },
   { value: "2ª Série", label: "2ª Série (EM)" },
   { value: "3ª Série", label: "3ª Série (EM)" },
